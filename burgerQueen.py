@@ -16,13 +16,14 @@ def login():
 
         cursor.execute("SELECT * FROM person WHERE Brukernavn = ? AND Passord = ? AND Ansatt = ?", (username, password, role))
         user = cursor.fetchone()
+        
 
         if user is None:
             print("Incorrect information, please try again")
 
         else:
             print("Logged in successfully")
-            return username, password, role
+            return user
         
      elif loginOption == "2":
 
@@ -39,10 +40,18 @@ def login():
             print("Please enter a valid role")
             
         else:
-            cursor.execute("INSERT INTO person (Brukernavn, Passord, Ansatt) VALUES (?, ?, ?)", (username, password, role))
-            con.commit()
-            print("Account created successfully")
-            return username, password, role
+            cursor.execute("SELECT * FROM person WHERE Brukernavn = ?", (username,))
+            user = cursor.fetchone()
+            if user is not None:
+                print("Username already exists, please try again")
+            else:
+                cursor.execute("INSERT INTO person (Brukernavn, Passord, Ansatt) VALUES (?, ?, ?)", (username, password, role))
+                con.commit()
+                print("Account created successfully")
+                return user
+            
+            
+            
 
      else:
         print("Please enter a valid option")
@@ -54,11 +63,12 @@ def customerMenu(username, password, role):
 
 
 def main():
+    user = None  
     while True:
-        if 'role' not in locals():
-            username, password, role = login()
-        elif role == 0:
-            customerMenu(username, password, role)
+        if user is None:
+            user = login()  
+        elif user[3] == 0: 
+            customerMenu(user[1], user[2], user[3])  
 
 
 if __name__ == "__main__":
