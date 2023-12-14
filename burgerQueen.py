@@ -5,7 +5,7 @@ cursor = con.cursor()
          
 def login():
      
-     loginOption = input("1. Login\n2. Register\n")
+     loginOption = input("1. Login\n2. Register\n3. Exit\n")
 
      if loginOption == "1":
 
@@ -51,6 +51,9 @@ def login():
                 user = cursor.fetchone()
                 print("Account created successfully")
                 return user
+            
+     elif loginOption == "3":
+        exit()
             
             
             
@@ -99,6 +102,8 @@ def customerMenu(user):
      elif option == "2":
          cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
          print(cursor.fetchall())
+     elif option == "3":
+         main()
          
 
 def main():
