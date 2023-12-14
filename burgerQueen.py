@@ -61,22 +61,27 @@ def order(personID, username, password, role):
     burger = cursor.fetchall()
     print("1. " + burger[0][1] + "\n2. " + burger[1][1] + "\n3. " + burger[2][1])
     item = input("What would you like to order? ")
+    quantity = int(input("How many would you like? "))
 
-    if item == "1":
-        print("You have ordered a " + burger[0][1] + "\n")
-        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[0][0]))
-        con.commit()
-        print("Your order has been placed")
-    elif item == "2":
-        print("You have ordered a " + burger[1][1] + "\n")
-        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[1][0]))
-        con.commit()
-        print("Your order has been placed")
-    elif item == "3":
-        print("You have ordered a " + burger[2][1] + "\n")
-        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[2][0]))
-        con.commit()
-        print("Your order has been placed")
+    for i in range(quantity):
+
+        if item == "1":
+            print("You have ordered a " + burger[0][1] + "\n")
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[0][0]))
+            con.commit()
+            print("Your order has been placed")
+        elif item == "2":
+            print("You have ordered a " + burger[1][1] + "\n")
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[1][0]))
+            con.commit()
+            print("Your order has been placed")
+        elif item == "3":
+            print("You have ordered a " + burger[2][1] + "\n")
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[2][0]))
+            con.commit()
+            print("Your order has been placed")
+        else:
+            print("Please enter a valid option")
 
 
 
