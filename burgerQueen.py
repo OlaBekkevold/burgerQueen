@@ -56,10 +56,39 @@ def login():
      else:
         print("Please enter a valid option")
 
+def order(personID, username, password, role):
+    cursor.execute("SELECT * from burger")
+    burger = cursor.fetchall()
+    print("1. " + burger[0][1] + "\n2. " + burger[1][1] + "\n3. " + burger[2][1])
+    item = input("What would you like to order? ")
+
+    if item == "1":
+        print("You have ordered a " + burger[0][1] + "\n")
+        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[0][0]))
+        con.commit()
+        print("Your order has been placed")
+    elif item == "2":
+        print("You have ordered a " + burger[1][1] + "\n")
+        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[1][0]))
+        con.commit()
+        print("Your order has been placed")
+    elif item == "3":
+        print("You have ordered a " + burger[2][1] + "\n")
+        cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (personID, burger[2][0]))
+        con.commit()
+        print("Your order has been placed")
 
 
-def customerMenu(username, password, role):
-     print("Welcome to Burger Queen " + username + "!")
+
+
+
+def customerMenu(personID, username, password, role):
+     print("Welcome to Burger Queen " + username + "!\n")
+     print("1. Order\n2. View your orders\n3. Logout\n")
+     option = input("Select an option: ")
+
+     if option == "1":
+         order(personID, username, password, role)
 
 
 def main():
@@ -68,7 +97,7 @@ def main():
         if user is None:
             user = login()  
         elif user[3] == 0: 
-            customerMenu(user[1], user[2], user[3])  
+            customerMenu(user[0], user[1], user[2], user[3])  
 
 
 if __name__ == "__main__":
