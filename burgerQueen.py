@@ -88,31 +88,37 @@ def order(user):
         else:
             print("Please enter a valid option")
 
+def viewOrder(user):
+    cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
+    print(cursor.fetchall())
 
 
 
-
-def customerMenu(user):
+def Menu(user):
      print("Welcome to Burger Queen " + user[1] + "!\n")
      print("1. Order\n2. View your orders\n3. Logout\n")
      option = input("Select an option: ")
-
-     if option == "1":
-         order(user)
-     elif option == "2":
-         cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
-         print(cursor.fetchall())
-     elif option == "3":
-         main()
+     return option
          
 
 def main():
-    user = None  
+    user = None
+    option = None  
     while True:
         if user is None:
             user = login()  
-        elif user[3] == 0: 
-            customerMenu(user)  
+
+        elif user is not None and option == None: 
+           option = Menu(user)
+
+        elif option == "1":
+            order(user)
+            option = None
+        elif option == "2":
+            viewOrder(user)
+            option = None
+        elif option == "3":
+            main()
 
 
 if __name__ == "__main__":
