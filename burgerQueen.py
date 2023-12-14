@@ -45,8 +45,10 @@ def login():
             if user is not None:
                 print("Username already exists, please try again")
             else:
-                cursor.execute("INSERT INTO person (Brukernavn, Passord, Ansatt) VALUES (?, ?, ?)", (username, password, role))
+                user = cursor.execute("INSERT INTO person (Brukernavn, Passord, Ansatt) VALUES (?, ?, ?)", (username, password, role))
                 con.commit()
+                cursor.execute("SELECT * FROM person WHERE Brukernavn = ?", (username,))
+                user = cursor.fetchone()
                 print("Account created successfully")
                 return user
             
