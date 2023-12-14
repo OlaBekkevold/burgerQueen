@@ -95,8 +95,9 @@ def customerMenu(user):
      if option == "1":
          order(user)
      elif option == "2":
-         cursor.execute
-
+         cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
+         print(cursor.fetchall())
+         
 
 def main():
     user = None  
