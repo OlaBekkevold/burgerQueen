@@ -1,8 +1,8 @@
 import sqlite3
-
 con = sqlite3.connect('burgerQueen.db')
 cursor = con.cursor()
          
+
 def login():
      
      loginOption = input("1. Login\n2. Register\n3. Exit\n")
@@ -93,10 +93,49 @@ def viewOrder(user):
     print(cursor.fetchall())
 
 
+def manageOrders():
+    cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID";""")
+    orders = cursor.fetchall()
+
+    for i in orders:
+        print(i)
+
+    order = int(input("Which order do you want to manage? "))
+    cursor.execute("SELECT * FROM ordre WHERE Ordrenummer = ?", (order,))
+    selectedOrder = cursor.fetchone()
+
+    if selectedOrder is None:
+        print("Order does not exist")
+
+    else:
+        print("What do you want to do with this order? ")
+        option = input("1. Mark as produced\n2. Cancel order\n")
+
+        if option == "1":
+            cursor.execute("UPDATE ordre SET Produsert = 1 WHERE Ordrenummer = ?", (order,))
+            con.commit()
+            print("Order has been marked as produced")
+
+        elif option == "2":
+            cursor.execute("DELETE FROM ordre WHERE Ordrenummer = ?", (order,))
+            con.commit()
+            print("Order has been deleted")
+
+        else:
+            print("Please enter a valid option")
+
 
 def Menu(user):
-     print("Welcome to Burger Queen " + user[1] + "!\n")
-     print("1. Order\n2. View your orders\n3. Logout\n")
+     if user[3] == 0:
+        print("Welcome to Burger Queen " + user[1] + "!\n")
+        print("1. Order\n2. View your orders\n3. Logout\n")
+     elif user[3] == 1:
+         print("Have a nice day at work " + user[1] + "!\n")
+         print("1. Order\n2. View your orders\n3. Logout\n4. Manage orders\n5. View ingredients\n")
+    
+     else:
+         print("Invalid role")
+         
      option = input("Select an option: ")
      return option
          
@@ -114,11 +153,20 @@ def main():
         elif option == "1":
             order(user)
             option = None
+
         elif option == "2":
             viewOrder(user)
             option = None
+
         elif option == "3":
             main()
+        
+        elif option == "4":
+            manageOrders()
+            option = None
+
+        elif option == "5":
+            print("5")
 
 
 if __name__ == "__main__":
