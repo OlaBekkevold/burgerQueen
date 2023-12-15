@@ -124,11 +124,18 @@ def manageOrders():
         else:
             print("Please enter a valid option")
 
+def viewIngredients():
+    cursor.execute("SELECT * FROM ingrediens")
+    ingredients = cursor.fetchall()
+    for i in ingredients:
+        print(i)
+    
 
 def Menu(user):
      if user[3] == 0:
         print("Welcome to Burger Queen " + user[1] + "!\n")
         print("1. Order\n2. View your orders\n3. Logout\n")
+
      elif user[3] == 1:
          print("Have a nice day at work " + user[1] + "!\n")
          print("1. Order\n2. View your orders\n3. Logout\n4. Manage orders\n5. View ingredients\n")
@@ -166,7 +173,8 @@ def main():
             option = None
 
         elif option == "5":
-            print("5")
+            viewIngredients()
+            option = None
 
 
 if __name__ == "__main__":
