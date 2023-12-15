@@ -95,7 +95,9 @@ def order(user):
 
 def viewOrder(user):
     cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
-    print(cursor.fetchall())
+    orders = cursor.fetchall()
+    for order in orders:
+        print(order)
 
 
 def manageOrders():
