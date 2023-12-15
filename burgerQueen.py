@@ -65,28 +65,33 @@ def order(user):
     cursor.execute("SELECT * from burger")
     burger = cursor.fetchall()
     print("1. " + burger[0][1] + "\n2. " + burger[1][1] + "\n3. " + burger[2][1])
-    item = input("What would you like to order? ")
+    item = int(input("What would you like to order? "))
     quantity = int(input("How many would you like? "))
 
-    for i in range(quantity):
+    if item == 1:
+        item = 0
+        for i in range(quantity):
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[item][0]))
+            con.commit()
+            
+    elif item == 2:
+        item = 1
+        for i in range(quantity):
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[item][0]))
+            con.commit()
 
-        if item == "1":
-            print("You have ordered a " + burger[0][1] + "\n")
-            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[0][0]))
+    elif item == 3:
+        item = 2
+        for i in range(quantity):
+            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[item][0]))
             con.commit()
-            print("Your order has been placed")
-        elif item == "2":
-            print("You have ordered a " + burger[1][1] + "\n")
-            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[1][0]))
-            con.commit()
-            print("Your order has been placed")
-        elif item == "3":
-            print("You have ordered a " + burger[2][1] + "\n")
-            cursor.execute("INSERT INTO ordre (Produsert, personID, burgerID) VALUES (0, ?, ?)", (user[0], burger[2][0]))
-            con.commit()
-            print("Your order has been placed")
-        else:
-            print("Please enter a valid option")
+
+    else:
+        print("Please enter a valid option")
+        
+    print("You have ordered " + str(quantity) + " " + burger[item][1] + "\n")
+
+
 
 def viewOrder(user):
     cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
@@ -131,7 +136,7 @@ def viewIngredients():
         print(i)
     
 
-def Menu(user):
+def menu(user):
      if user[3] == 0:
         print("Welcome to Burger Queen " + user[1] + "!\n")
         print("1. Order\n2. View your orders\n3. Logout\n")
@@ -155,7 +160,7 @@ def main():
             user = login()  
 
         elif user is not None and option == None: 
-           option = Menu(user)
+           option = menu(user)
 
         elif option == "1":
             order(user)
