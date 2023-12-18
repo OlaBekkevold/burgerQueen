@@ -12,11 +12,9 @@ def login():
         print("Enter your account information to login\n")
         username = input("Enter your username: ").strip()
         password = input("Enter your password: ").strip()
-        role = int(input("Are you employed at Burger Queen? (1 for yes, 0 for no): "))
 
-        cursor.execute("SELECT * FROM person WHERE Brukernavn = ? AND Passord = ? AND Ansatt = ?", (username, password, role))
+        cursor.execute("SELECT * FROM person WHERE Brukernavn = ? AND Passord = ?", (username, password,))
         user = cursor.fetchone()
-        
 
         if user is None:
             print("Incorrect information, please try again")
