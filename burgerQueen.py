@@ -55,9 +55,6 @@ def login():
      elif loginOption == "3":
         exit()
             
-            
-            
-
      else:
         print("Please enter a valid option")
 
@@ -123,6 +120,27 @@ def manageOrders():
             con.commit()
             print("Order has been marked as produced")
 
+            cursor.execute("""SELECT b."Navn" AS "BurgerName",
+            GROUP_CONCAT(i."Navn", ', ') AS "Ingredients"
+            FROM "burger" AS b
+            JOIN
+                "BurgerIngrediens" AS bi ON b."ID" = bi."burgerID"
+            JOIN
+                "ingrediens" AS i ON bi."ingrediensID" = i."ID"
+            WHERE
+                b."ID" = ?""", (selectedOrder[3],))
+            
+            ingredients = cursor.fetchall()
+            ingredientList = ingredients[0][1].split(",")
+            ingredientList = [x.strip() for x in ingredientList]
+            
+            for ingredient in ingredientList:
+
+                cursor.execute("""UPDATE ingrediens SET Antall = Antall - 1 WHERE Navn = ?;""", (ingredient,))
+            
+            con.commit()
+            
+            
         elif option == "2":
             cursor.execute("DELETE FROM ordre WHERE Ordrenummer = ?", (order,))
             con.commit()
