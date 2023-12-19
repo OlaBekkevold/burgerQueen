@@ -104,6 +104,7 @@ def viewOrder(user):
     # Joins the ordre, person and burger tables to get easy to read information about the orders according to the ID of the logged in user
     cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID" WHERE p."ID" = ?;""", (user[0],))
     orders = cursor.fetchall()
+    print(" ID  |  Person  |  Burger  |  Produced")
     # Print each order in it's own line
     for order in orders:
         print(order)
@@ -114,6 +115,7 @@ def manageOrders():
     cursor.execute("""SELECT o."Ordrenummer", p."Brukernavn" AS "PersonName", b."Navn" AS "BurgerName", o."Produsert" FROM "ordre" o JOIN "person" p ON o."personID" = p."ID" JOIN "burger" b ON o."burgerID" = b."ID";""")
     orders = cursor.fetchall()
 
+    print(" ID  |  Person  |  Burger  |  Produced")
     for i in orders:
         print(i)
 
@@ -173,6 +175,7 @@ def manageIngredients():
     # print all ingredients and their quantity
     cursor.execute("SELECT * FROM ingrediens")
     ingredients = cursor.fetchall()
+    print(" ID  |  Name  |  Quantity")
     for i in ingredients:
         print(i)
 
