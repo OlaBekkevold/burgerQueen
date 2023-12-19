@@ -18,17 +18,7 @@ VALUES ('Geralt', 'Whopper Queen', 1, 21, 1),
 ('Roach', 'Whopper Queen', 0, 23, 1);
 
 
-SELECT
-    o."Ordrenummer",
-    p."Brukernavn" AS "PersonName",
-    b."Navn" AS "BurgerName",
-    o."Produsert"
-FROM
-    "ordre" o
-JOIN
-    "person" p ON o."personID" = p."ID"
-JOIN
-    "burger" b ON o."burgerID" = b."ID";
+
 
 
 INSERT INTO "ingrediens" ("Navn", "Antall")
@@ -55,14 +45,3 @@ INSERT INTO "burgerIngrediens" ("burgerID", "ingrediensID") VALUES (2, 5);
 INSERT INTO "burgerIngrediens" ("burgerID", "ingrediensID") VALUES (3, 7);
 
 
-SELECT
-    b."Navn" AS "BurgerName",
-    GROUP_CONCAT(i."Navn", ', ') AS "Ingredients"
-FROM
-    "burger" AS b
-JOIN
-    "BurgerIngrediens" AS bi ON b."ID" = bi."burgerID"
-JOIN
-    "ingrediens" AS i ON bi."ingrediensID" = i."ID"
-GROUP BY
-    b."ID";

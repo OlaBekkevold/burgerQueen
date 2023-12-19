@@ -136,7 +136,7 @@ def manageOrders():
             con.commit()
             print("Order has been marked as produced")
 
-            # Get the ingredients of the burger and subtract 1 from the quantity of each ingredient. The ingredients are stored in comma seperated list
+            # Get the ingredients of the burger and subtract 1 from the quantity of each ingredient. The ingredients are stored in comma seperated list with the use of GROUP_CONCAT
             cursor.execute("""SELECT b."Navn" AS "BurgerName",
             GROUP_CONCAT(i."Navn", ', ') AS "Ingredients"
             FROM "burger" AS b
