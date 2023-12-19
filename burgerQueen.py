@@ -176,18 +176,18 @@ def manageIngredients():
     for i in ingredients:
         print(i)
 
-    option = input("Do you want to add ingredients? (y/n) ")
+    option = input("\nDo you want to add ingredients? (y/n) ")
 
     if option == "y":
         # Ask the user which ingredient they will increase
-        ingredient = input("Enter the name of the ingredient: ")
+        ingredient = input("\nEnter the name of the ingredient: ")
         quantity = int(input("How many?: "))
 
         cursor.execute("SELECT * FROM ingrediens WHERE Navn = ?", (ingredient,))
         selectedIngredient = cursor.fetchone()
         # Check if the ingredient exists
         if selectedIngredient is None:
-            print("Ingredient does not exist in the database")
+            print("\nIngredient does not exist in the database")
 
         else:
             # Update the quantity of the ingredient based on the user input
@@ -200,11 +200,11 @@ def menu(user):
      
      # The user is presented with different options depending on their role. Which it gets from the user variable
      if user[3] == 0:
-        print("Welcome to Burger Queen " + user[1] + "!\n")
+        print("\nWelcome to Burger Queen " + user[1] + "!\n")
         print("1. Order\n2. View your orders\n3. Logout\n")
 
      elif user[3] == 1:
-         print("Have a nice day at work " + user[1] + "!\n")
+         print("\nHave a nice day at work " + user[1] + "!\n")
          print("1. Order\n2. View your orders\n3. Logout\n4. Manage orders\n5. Manage ingredients\n")
     
      else:
