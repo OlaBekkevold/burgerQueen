@@ -147,11 +147,28 @@ def manageOrders():
         else:
             print("Please enter a valid option")
 
-def viewIngredients():
+def manageIngredients():
     cursor.execute("SELECT * FROM ingrediens")
     ingredients = cursor.fetchall()
     for i in ingredients:
         print(i)
+
+    option = input("Do you want to add ingredients? (y/n) ")
+
+    if option == "y":
+        ingredient = input("Enter the name of the ingredient: ")
+        quantity = int(input("How many?: "))
+
+        cursor.execute("SELECT * FROM ingrediens WHERE Navn = ?", (ingredient,))
+        selectedIngredient = cursor.fetchone()
+
+        if selectedIngredient is None:
+            print("Ingredient does not exist in the database")
+
+        else:
+            cursor.execute("UPDATE ingrediens SET Antall = Antall + ? WHERE Navn = ?", (quantity, ingredient,))
+            con.commit()
+            print("Ingredient has been added/n")
     
 
 def menu(user):
@@ -161,7 +178,7 @@ def menu(user):
 
      elif user[3] == 1:
          print("Have a nice day at work " + user[1] + "!\n")
-         print("1. Order\n2. View your orders\n3. Logout\n4. Manage orders\n5. View ingredients\n")
+         print("1. Order\n2. View your orders\n3. Logout\n4. Manage orders\n5. Manage ingredients\n")
     
      else:
          print("Invalid role")
@@ -196,7 +213,7 @@ def main():
             option = None
 
         elif option == "5":
-            viewIngredients()
+            manageIngredients()
             option = None
 
 
